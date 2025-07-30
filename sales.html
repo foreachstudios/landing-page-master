@@ -1,0 +1,910 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Axees - Investor Presentation</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        .sales-page {
+            min-height: 100vh;
+            background: #0a0a0a;
+            color: white;
+            overflow-x: hidden;
+        }
+        
+        .sales-header {
+            text-align: center;
+            padding: 2rem 0 1rem;
+            background: rgba(0,0,0,0.8);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+        }
+        
+        .sales-header h1 {
+            font-size: 2rem;
+            color: white;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+        
+        .sales-header p {
+            font-size: 1rem;
+            color: rgba(255,255,255,0.7);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .presentation-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+            position: relative;
+        }
+        
+        .slide-viewer {
+            position: relative;
+            background: #000;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+        }
+        
+        .slides-wrapper {
+            position: relative;
+            width: 100%;
+            padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
+            background: #000;
+        }
+        
+        .slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .slide.active {
+            opacity: 1;
+        }
+        
+        .slide img {
+            max-width: 100%;
+            max-height: 100%;
+            width: auto;
+            height: auto;
+            object-fit: contain;
+        }
+        
+        .slide-controls {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(to top, rgba(0,0,0,0.9), transparent);
+            padding: 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .nav-buttons {
+            display: flex;
+            gap: 1rem;
+        }
+        
+        .nav-btn {
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.2);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.2s ease;
+            backdrop-filter: blur(10px);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .nav-btn:hover:not(:disabled) {
+            background: rgba(255,255,255,0.2);
+            transform: translateY(-2px);
+        }
+        
+        .nav-btn:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
+        
+        .slide-counter {
+            font-size: 1rem;
+            color: rgba(255,255,255,0.8);
+            font-weight: 500;
+        }
+        
+        .slide-navigation {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            padding: 0 2rem;
+            pointer-events: none;
+        }
+        
+        .slide-nav-btn {
+            background: rgba(0,0,0,0.5);
+            border: none;
+            color: white;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            transition: all 0.2s ease;
+            pointer-events: all;
+            backdrop-filter: blur(5px);
+        }
+        
+        .slide-nav-btn:hover:not(:disabled) {
+            background: rgba(0,0,0,0.8);
+            transform: scale(1.1);
+        }
+        
+        .slide-nav-btn:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
+        
+        .slide-thumbnails {
+            margin-top: 2rem;
+            display: flex;
+            gap: 0.5rem;
+            overflow-x: auto;
+            padding: 1rem 0;
+            scrollbar-width: thin;
+            scrollbar-color: rgba(255,255,255,0.3) transparent;
+        }
+        
+        .slide-thumbnails::-webkit-scrollbar {
+            height: 6px;
+        }
+        
+        .slide-thumbnails::-webkit-scrollbar-track {
+            background: rgba(255,255,255,0.1);
+            border-radius: 3px;
+        }
+        
+        .slide-thumbnails::-webkit-scrollbar-thumb {
+            background: rgba(255,255,255,0.3);
+            border-radius: 3px;
+        }
+        
+        .thumbnail {
+            flex-shrink: 0;
+            width: 120px;
+            height: 67.5px;
+            border-radius: 6px;
+            overflow: hidden;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: all 0.2s ease;
+            opacity: 0.6;
+        }
+        
+        .thumbnail:hover {
+            opacity: 0.9;
+            transform: translateY(-2px);
+        }
+        
+        .thumbnail.active {
+            border-color: var(--primary-color);
+            opacity: 1;
+        }
+        
+        .thumbnail img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .loading-indicator {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 1.2rem;
+            color: rgba(255,255,255,0.6);
+        }
+        
+        .sales-actions {
+            max-width: 1400px;
+            margin: 3rem auto;
+            padding: 2rem;
+            text-align: center;
+        }
+        
+        .sales-actions h3 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            color: white;
+        }
+        
+        .sales-actions p {
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+            color: rgba(255,255,255,0.8);
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .contact-info {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+            margin-top: 2rem;
+        }
+        
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 1rem 2rem;
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 8px;
+            text-decoration: none;
+            color: white;
+            transition: all 0.2s ease;
+            backdrop-filter: blur(10px);
+        }
+        
+        .contact-item:hover {
+            background: var(--primary-color);
+            transform: translateY(-2px);
+            border-color: var(--primary-color);
+        }
+        
+        .logout-btn {
+            position: fixed;
+            top: 2rem;
+            right: 2rem;
+            z-index: 1000;
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.2);
+            backdrop-filter: blur(10px);
+        }
+        
+        .logout-btn:hover {
+            background: rgba(255,255,255,0.2);
+        }
+        
+        .keyboard-hint {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: rgba(0,0,0,0.8);
+            padding: 0.75rem 1.25rem;
+            border-radius: 8px;
+            font-size: 0.875rem;
+            color: rgba(255,255,255,0.7);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        @media (max-width: 768px) {
+            .sales-header h1 {
+                font-size: 1.5rem;
+            }
+            
+            .presentation-container {
+                padding: 1rem;
+            }
+            
+            .slide-controls {
+                padding: 1rem;
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .slide-navigation {
+                display: none;
+            }
+            
+            .slide-thumbnails {
+                display: none;
+            }
+            
+            .logout-btn {
+                top: 1rem;
+                right: 1rem;
+                padding: 0.5rem 1rem;
+                font-size: 0.875rem;
+            }
+            
+            .keyboard-hint {
+                display: none;
+            }
+            
+            .sales-actions {
+                padding: 1rem;
+            }
+            
+            .contact-info {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+        
+        /* Fullscreen styles */
+        .fullscreen-btn {
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.2);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.875rem;
+            transition: all 0.2s ease;
+            backdrop-filter: blur(10px);
+        }
+        
+        .fullscreen-btn:hover {
+            background: rgba(255,255,255,0.2);
+        }
+        
+        .slide-viewer:fullscreen {
+            background: #000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .slide-viewer:fullscreen .slides-wrapper {
+            padding-bottom: 0;
+            height: 100vh;
+        }
+        
+        .slide-viewer:fullscreen .slide-controls {
+            position: fixed;
+            background: linear-gradient(to top, rgba(0,0,0,0.9), transparent);
+        }
+        
+        /* Loading animation */
+        @keyframes pulse {
+            0%, 100% { opacity: 0.6; }
+            50% { opacity: 1; }
+        }
+        
+        .loading-indicator {
+            animation: pulse 1.5s ease-in-out infinite;
+        }
+        
+        /* Video Preview Section */
+        .video-preview-section {
+            max-width: 1400px;
+            margin: 4rem auto;
+            padding: 2rem;
+            text-align: center;
+        }
+        
+        .video-header h2 {
+            font-size: 2.5rem;
+            color: white;
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+        
+        .video-header p {
+            font-size: 1.2rem;
+            color: rgba(255,255,255,0.8);
+            margin-bottom: 3rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .video-placeholder {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 3rem;
+            align-items: start;
+        }
+        
+        .video-container {
+            position: relative;
+            width: 100%;
+            padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+            border-radius: 12px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid rgba(255,255,255,0.1);
+        }
+        
+        .video-container:hover {
+            transform: translateY(-5px);
+            border-color: var(--primary-color);
+            box-shadow: 0 20px 60px rgba(124, 58, 237, 0.3);
+        }
+        
+        .play-button {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 80px;
+            height: 80px;
+            background: rgba(255,255,255,0.15);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255,255,255,0.2);
+            transition: all 0.3s ease;
+        }
+        
+        .video-container:hover .play-button {
+            background: var(--primary-color);
+            border-color: var(--primary-color);
+            transform: translate(-50%, -50%) scale(1.1);
+        }
+        
+        .play-icon {
+            color: white;
+            font-size: 2rem;
+            margin-left: 4px; /* Optical alignment */
+        }
+        
+        .video-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(to top, rgba(0,0,0,0.9), transparent);
+            padding: 2rem;
+            text-align: left;
+        }
+        
+        .video-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: white;
+            margin-bottom: 0.5rem;
+        }
+        
+        .video-subtitle {
+            font-size: 1rem;
+            color: rgba(255,255,255,0.7);
+            margin-bottom: 1rem;
+        }
+        
+        .coming-soon-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--primary-color), #a855f7);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.875rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+        
+        @keyframes glow {
+            from { box-shadow: 0 0 20px rgba(124, 58, 237, 0.5); }
+            to { box-shadow: 0 0 30px rgba(124, 58, 237, 0.8); }
+        }
+        
+        .video-description {
+            text-align: left;
+        }
+        
+        .video-description h4 {
+            font-size: 1.5rem;
+            color: white;
+            margin-bottom: 1.5rem;
+            font-weight: 600;
+        }
+        
+        .video-description ul {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .video-description li {
+            font-size: 1.1rem;
+            color: rgba(255,255,255,0.8);
+            margin-bottom: 1rem;
+            padding-left: 0;
+            position: relative;
+        }
+        
+        .video-description li:before {
+            content: '';
+            position: absolute;
+            left: -1.5rem;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 6px;
+            height: 6px;
+            background: var(--primary-color);
+            border-radius: 50%;
+        }
+        
+        @media (max-width: 1024px) {
+            .video-placeholder {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+            
+            .video-description {
+                text-align: center;
+            }
+            
+            .video-description li:before {
+                display: none;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .video-header h2 {
+                font-size: 2rem;
+            }
+            
+            .video-preview-section {
+                padding: 1rem;
+                margin: 2rem auto;
+            }
+            
+            .play-button {
+                width: 60px;
+                height: 60px;
+            }
+            
+            .play-icon {
+                font-size: 1.5rem;
+            }
+            
+            .video-title {
+                font-size: 1.2rem;
+            }
+            
+            .video-overlay {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="sales-page">
+        <button class="btn btn-secondary logout-btn" onclick="logout()">← Back to Landing</button>
+        
+        <div class="sales-header">
+            <h1>Axees Investor Presentation</h1>
+            <p>Revolutionizing influencer marketing with AI-powered direct connections</p>
+        </div>
+        
+        <div class="presentation-container">
+            <div class="slide-viewer" id="slideViewer">
+                <div class="slides-wrapper">
+                    <div class="loading-indicator" id="loadingIndicator">Loading presentation...</div>
+                    
+                    <!-- Slides will be inserted here -->
+                    <div class="slide active" data-slide="1">
+                        <img src="slides/slide-01.png" alt="Axees Title Slide" loading="eager">
+                    </div>
+                    <div class="slide" data-slide="2">
+                        <img src="slides/slide-02.png" alt="Problem Statement" loading="lazy">
+                    </div>
+                    <div class="slide" data-slide="3">
+                        <img src="slides/slide-03.png" alt="Solution Overview" loading="lazy">
+                    </div>
+                    <div class="slide" data-slide="4">
+                        <img src="slides/slide-04.png" alt="Market Opportunity" loading="lazy">
+                    </div>
+                    <div class="slide" data-slide="5">
+                        <img src="slides/slide-05.png" alt="Product Features" loading="lazy">
+                    </div>
+                    <div class="slide" data-slide="6">
+                        <img src="slides/slide-06.png" alt="Business Model" loading="lazy">
+                    </div>
+                    <div class="slide" data-slide="7">
+                        <img src="slides/slide-07.png" alt="Traction" loading="lazy">
+                    </div>
+                    <div class="slide" data-slide="8">
+                        <img src="slides/slide-08.png" alt="Competitive Advantage" loading="lazy">
+                    </div>
+                    <div class="slide" data-slide="9">
+                        <img src="slides/slide-09.png" alt="Team" loading="lazy">
+                    </div>
+                    <div class="slide" data-slide="10">
+                        <img src="slides/slide-10.png" alt="Investment Ask" loading="lazy">
+                    </div>
+                </div>
+                
+                <div class="slide-navigation">
+                    <button class="slide-nav-btn" id="prevSlideBtn" onclick="previousSlide()" disabled>
+                        ←
+                    </button>
+                    <button class="slide-nav-btn" id="nextSlideBtn" onclick="nextSlide()">
+                        →
+                    </button>
+                </div>
+                
+                <div class="slide-controls">
+                    <div class="nav-buttons">
+                        <button class="nav-btn" id="prevBtn" onclick="previousSlide()" disabled>
+                            ← Previous
+                        </button>
+                        <button class="nav-btn" id="nextBtn" onclick="nextSlide()">
+                            Next →
+                        </button>
+                    </div>
+                    
+                    <div class="slide-counter">
+                        <span id="currentSlide">1</span> / <span id="totalSlides">10</span>
+                    </div>
+                    
+                    <button class="fullscreen-btn" onclick="toggleFullscreen()">
+                        ⛶ Fullscreen
+                    </button>
+                </div>
+            </div>
+            
+            <div class="slide-thumbnails" id="thumbnails">
+                <!-- Thumbnails will be generated by JavaScript -->
+            </div>
+        </div>
+        
+        <!-- Video Preview Section -->
+        <div class="video-preview-section">
+            <div class="video-header">
+                <h2>🎬 Video Presentation Coming Soon</h2>
+                <p>Get an exclusive behind-the-scenes look at how Axees is revolutionizing influencer marketing</p>
+            </div>
+            
+            <div class="video-placeholder">
+                <div class="video-container">
+                    <div class="play-button">
+                        <div class="play-icon">▶</div>
+                    </div>
+                    <div class="video-overlay">
+                        <div class="video-title">Axees: The Future of Influencer Marketing</div>
+                        <div class="video-subtitle">Exclusive investor presentation video</div>
+                        <div class="coming-soon-badge">Coming Soon</div>
+                    </div>
+                </div>
+                <div class="video-description">
+                    <h4>What you'll see in the video:</h4>
+                    <ul>
+                        <li>🚀 Live platform demonstration</li>
+                        <li>💡 Team vision and strategy</li>
+                        <li>📊 Market opportunity deep dive</li>
+                        <li>🎯 Investment roadmap</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <div class="sales-actions">
+            <h3>Ready to Join the Revolution?</h3>
+            <p>We're seeking strategic partners to help us scale and transform the $16B influencer marketing industry.</p>
+            
+            <div class="contact-info">
+                <a href="mailto:axees@axees.io" class="contact-item">
+                    <span>📧</span>
+                    <span>axees@axees.io</span>
+                </a>
+                <a href="https://docsend.com/view/wk5yqxssg99h7ngw" target="_blank" class="contact-item">
+                    <span>📄</span>
+                    <span>Download Deck</span>
+                </a>
+            </div>
+        </div>
+        
+        <div class="keyboard-hint">
+            Use ← → arrow keys to navigate
+        </div>
+    </div>
+
+    <script>
+        // Check if user is logged in
+        function checkAuth() {
+            const isLoggedIn = sessionStorage.getItem('axees_logged_in');
+            if (!isLoggedIn || isLoggedIn !== 'true') {
+                window.location.href = 'login.html';
+                return;
+            }
+        }
+        
+        // Logout function
+        function logout() {
+            sessionStorage.removeItem('axees_logged_in');
+            sessionStorage.removeItem('login_timestamp');
+            window.location.href = 'index.html';
+        }
+        
+        // Slide navigation
+        let currentSlideIndex = 0;
+        const totalSlides = 10;
+        
+        function showSlide(index) {
+            // Hide loading indicator once first slide loads
+            document.getElementById('loadingIndicator').style.display = 'none';
+            
+            // Update slide visibility
+            document.querySelectorAll('.slide').forEach((slide, i) => {
+                slide.classList.toggle('active', i === index);
+            });
+            
+            // Update thumbnails
+            document.querySelectorAll('.thumbnail').forEach((thumb, i) => {
+                thumb.classList.toggle('active', i === index);
+            });
+            
+            // Update counter
+            document.getElementById('currentSlide').textContent = index + 1;
+            
+            // Update button states
+            const isPrevDisabled = index === 0;
+            const isNextDisabled = index === totalSlides - 1;
+            
+            document.getElementById('prevBtn').disabled = isPrevDisabled;
+            document.getElementById('nextBtn').disabled = isNextDisabled;
+            document.getElementById('prevSlideBtn').disabled = isPrevDisabled;
+            document.getElementById('nextSlideBtn').disabled = isNextDisabled;
+            
+            // Scroll thumbnail into view
+            const activeThumbnail = document.querySelector('.thumbnail.active');
+            if (activeThumbnail) {
+                activeThumbnail.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+            }
+            
+            currentSlideIndex = index;
+        }
+        
+        function nextSlide() {
+            if (currentSlideIndex < totalSlides - 1) {
+                showSlide(currentSlideIndex + 1);
+            }
+        }
+        
+        function previousSlide() {
+            if (currentSlideIndex > 0) {
+                showSlide(currentSlideIndex - 1);
+            }
+        }
+        
+        function goToSlide(index) {
+            showSlide(index);
+        }
+        
+        function toggleFullscreen() {
+            const viewer = document.getElementById('slideViewer');
+            if (!document.fullscreenElement) {
+                viewer.requestFullscreen().catch(err => {
+                    console.error('Error attempting to enable fullscreen:', err);
+                });
+            } else {
+                document.exitFullscreen();
+            }
+        }
+        
+        // Generate thumbnails
+        function generateThumbnails() {
+            const container = document.getElementById('thumbnails');
+            for (let i = 0; i < totalSlides; i++) {
+                const thumb = document.createElement('div');
+                thumb.className = 'thumbnail' + (i === 0 ? ' active' : '');
+                thumb.onclick = () => goToSlide(i);
+                
+                const img = document.createElement('img');
+                img.src = `slides/slide-${String(i + 1).padStart(2, '0')}.png`;
+                img.alt = `Slide ${i + 1}`;
+                img.loading = 'lazy';
+                
+                thumb.appendChild(img);
+                container.appendChild(thumb);
+            }
+        }
+        
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowLeft') {
+                previousSlide();
+            } else if (e.key === 'ArrowRight') {
+                nextSlide();
+            } else if (e.key === 'Escape' && document.fullscreenElement) {
+                document.exitFullscreen();
+            } else if (e.key === 'f' || e.key === 'F') {
+                toggleFullscreen();
+            }
+        });
+        
+        // Touch/swipe navigation for mobile
+        let touchStartX = 0;
+        let touchEndX = 0;
+        
+        const slideViewer = document.getElementById('slideViewer');
+        
+        slideViewer.addEventListener('touchstart', (e) => {
+            touchStartX = e.changedTouches[0].screenX;
+        }, false);
+        
+        slideViewer.addEventListener('touchend', (e) => {
+            touchEndX = e.changedTouches[0].screenX;
+            handleSwipe();
+        }, false);
+        
+        function handleSwipe() {
+            if (touchEndX < touchStartX - 50) {
+                nextSlide();
+            }
+            if (touchEndX > touchStartX + 50) {
+                previousSlide();
+            }
+        }
+        
+        // Preload next slide for smooth transitions
+        function preloadNextSlide() {
+            if (currentSlideIndex < totalSlides - 1) {
+                const nextImg = document.querySelector(`.slide[data-slide="${currentSlideIndex + 2}"] img`);
+                if (nextImg && !nextImg.complete) {
+                    nextImg.loading = 'eager';
+                }
+            }
+        }
+        
+        // Watch for slide changes to preload
+        const observer = new MutationObserver(() => {
+            preloadNextSlide();
+        });
+        
+        observer.observe(document.querySelector('.slides-wrapper'), {
+            attributes: true,
+            subtree: true,
+            attributeFilter: ['class']
+        });
+        
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', function() {
+            checkAuth();
+            generateThumbnails();
+            showSlide(0);
+            
+            // Hide loading indicator when first image loads
+            const firstImg = document.querySelector('.slide.active img');
+            if (firstImg.complete) {
+                document.getElementById('loadingIndicator').style.display = 'none';
+            } else {
+                firstImg.onload = () => {
+                    document.getElementById('loadingIndicator').style.display = 'none';
+                };
+            }
+        });
+    </script>
+</body>
+</html>

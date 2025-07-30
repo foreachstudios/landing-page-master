@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How Axees Works - Visual Process</title>
+    <style>
+        :root {
+            --primary-color: #5B3FFF;
+            --primary-light: #7C66FF;
+            --accent-light: #E6DBFF;
+            --text-primary: #1a1a1a;
+            --text-secondary: #4a4a4a;
+            --background: #ffffff;
+            --background-light: #FAFBFF;
+            --border-color: rgba(0, 0, 0, 0.08);
+            --radius: 12px;
+            --radius-lg: 20px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--background-light);
+            padding: 2rem;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .process-container {
+            max-width: 1200px;
+            width: 100%;
+            background: white;
+            border-radius: var(--radius-lg);
+            padding: 3rem;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        .process-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .process-title {
+            font-size: 2.5rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+        }
+
+        .process-subtitle {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            background: var(--accent-light);
+            padding: 1rem 2rem;
+            border-radius: var(--radius);
+            display: inline-block;
+        }
+
+        .process-flow {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            align-items: start;
+        }
+
+        .process-column {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .process-step {
+            background: var(--accent-light);
+            padding: 2rem;
+            border-radius: var(--radius-lg);
+            text-align: center;
+            position: relative;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .process-step:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(91, 63, 255, 0.2);
+        }
+
+        .step-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+        }
+
+        .step-description {
+            font-size: 1rem;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+
+        .process-visual {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem 0;
+            position: relative;
+        }
+
+        .visual-flow {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            background: var(--primary-light);
+            padding: 1.5rem 3rem;
+            border-radius: 50px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .visual-flow::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            animation: shimmer 2s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+
+        .flow-element {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .avatar-group {
+            display: flex;
+            align-items: center;
+            gap: -0.5rem;
+        }
+
+        .avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4, #45b7d1);
+            border: 3px solid white;
+            position: relative;
+            margin-left: -0.5rem;
+        }
+
+        .avatar:first-child {
+            margin-left: 0;
+        }
+
+        .flow-arrow {
+            color: white;
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .flow-icon {
+            background: white;
+            color: var(--primary-color);
+            width: 60px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: var(--radius);
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .success-indicator {
+            background: #10b981;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .connecting-arrows {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+
+        .arrow-path {
+            position: absolute;
+            background: var(--primary-color);
+            border-radius: 2px;
+        }
+
+        .arrow-down {
+            width: 3px;
+            height: 60px;
+            left: 50%;
+            top: 100%;
+            transform: translateX(-50%);
+        }
+
+        .arrow-horizontal {
+            width: 120px;
+            height: 3px;
+            top: 50%;
+            right: -60px;
+            transform: translateY(-50%);
+        }
+
+        .arrow-head {
+            position: absolute;
+            width: 0;
+            height: 0;
+            border-style: solid;
+        }
+
+        .arrow-head.down {
+            border-left: 6px solid transparent;
+            border-right: 6px solid transparent;
+            border-top: 10px solid var(--primary-color);
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .arrow-head.right {
+            border-top: 6px solid transparent;
+            border-bottom: 6px solid transparent;
+            border-left: 10px solid var(--primary-color);
+            right: -10px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        @media (max-width: 768px) {
+            .process-container {
+                padding: 2rem;
+                margin: 1rem;
+            }
+
+            .process-title {
+                font-size: 2rem;
+            }
+
+            .process-flow {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .visual-flow {
+                flex-direction: column;
+                gap: 1rem;
+                padding: 1rem 2rem;
+            }
+
+            .flow-element {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="process-container">
+        <div class="process-header">
+            <h1 class="process-title">How Axees Works</h1>
+            <div class="process-subtitle">Automate ads through the agency process, build careers</div>
+        </div>
+
+        <div class="process-flow">
+            <div class="process-column">
+                <div class="process-step">
+                    <h3 class="step-title">Access Any Influencer</h3>
+                    <p class="step-description">Connect with verified creators across all tiers through the fastest all-tier 2-way open marketplace</p>
+                    <div class="connecting-arrows">
+                        <div class="arrow-path arrow-down">
+                            <div class="arrow-head down"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="process-step">
+                    <h3 class="step-title">Automated Agency</h3>
+                    <p class="step-description">Streamlined offer management, scheduling, negotiation, contracts, briefing, and delivery automation</p>
+                    <div class="connecting-arrows">
+                        <div class="arrow-path arrow-horizontal">
+                            <div class="arrow-head right"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="process-column">
+                <div class="process-step">
+                    <h3 class="step-title">Freelance Career</h3>
+                    <p class="step-description">Comprehensive marketplace + educational academy + professional tools = your own marketing agency</p>
+                    <div class="connecting-arrows">
+                        <div class="arrow-path arrow-down">
+                            <div class="arrow-head down"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="process-step">
+                    <h3 class="step-title">Best Results</h3>
+                    <p class="step-description">Superior campaign performance through advanced briefing technology and flexible incentive structures</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="process-visual">
+            <div class="visual-flow">
+                <div class="flow-element">
+                    <div class="avatar-group">
+                        <div class="avatar"></div>
+                        <div class="avatar"></div>
+                        <div class="avatar"></div>
+                    </div>
+                </div>
+                
+                <span class="flow-arrow">→</span>
+                
+                <div class="flow-element">
+                    <div class="flow-icon">Brief</div>
+                </div>
+                
+                <span class="flow-arrow">→</span>
+                
+                <div class="flow-element">
+                    <div class="avatar"></div>
+                </div>
+                
+                <span class="flow-arrow">→</span>
+                
+                <div class="flow-element">
+                    <div class="success-indicator">✓ Content Ready!</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Add some interactive animations
+        document.addEventListener('DOMContentLoaded', function() {
+            const steps = document.querySelectorAll('.process-step');
+            
+            // Stagger animation on load
+            steps.forEach((step, index) => {
+                step.style.opacity = '0';
+                step.style.transform = 'translateY(30px)';
+                
+                setTimeout(() => {
+                    step.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+                    step.style.opacity = '1';
+                    step.style.transform = 'translateY(0)';
+                }, index * 200);
+            });
+
+            // Intersection Observer for scroll animations
+            const observerOptions = {
+                threshold: 0.2,
+                rootMargin: '0px 0px -50px 0px'
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.animation = 'pulse 1s ease';
+                    }
+                });
+            }, observerOptions);
+
+            steps.forEach(step => observer.observe(step));
+        });
+
+        // Add pulse animation
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes pulse {
+                0% { transform: scale(1); }
+                50% { transform: scale(1.02); }
+                100% { transform: scale(1); }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+</html>
