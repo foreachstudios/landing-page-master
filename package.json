@@ -1,0 +1,20 @@
+{
+  "name": "axees-landing-page",
+  "version": "1.0.0",
+  "description": "Axees - Automated Influencer Marketing Platform Landing Page",
+  "main": "index.html",
+  "scripts": {
+    "dev": "echo 'This is a static HTML project. Please use: python test-server.py' && exit 1",
+    "start": "echo 'This is a static HTML project. Please use: python test-server.py' && exit 1",
+    "serve": "python test-server.py"
+  },
+  "keywords": [
+    "landing-page",
+    "influencer-marketing",
+    "static-site"
+  ],
+  "author": "Axees",
+  "license": "MIT",
+  "devDependencies": {},
+  "dependencies": {}
+}
