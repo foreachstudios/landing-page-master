@@ -411,7 +411,10 @@ function initCounters() {
     
     const animateCounter = (counter) => {
         const target = parseInt(counter.getAttribute('data-target'));
-        const increment = target / 100; // Animate over 100 steps
+        const duration = 2000; // 2 seconds
+        const steps = 60; // 60 steps for smooth animation
+        const increment = target / steps;
+        const stepDuration = duration / steps;
         let current = 0;
         
         const updateCounter = () => {
@@ -421,16 +424,28 @@ function initCounters() {
                 
                 // Format the number based on target value
                 if (target >= 1000) {
-                    counter.textContent = (current / 1000).toFixed(1) + 'K';
+                    const kValue = Math.floor(current / 1000);
+                    const remainder = Math.floor((current % 1000) / 100);
+                    if (remainder > 0 && current < target) {
+                        counter.textContent = kValue + '.' + remainder + 'K';
+                    } else {
+                        counter.textContent = kValue + 'K';
+                    }
                 } else {
                     counter.textContent = Math.floor(current);
                 }
                 
-                requestAnimationFrame(updateCounter);
+                setTimeout(updateCounter, stepDuration);
             } else {
                 // Final formatting
                 if (target >= 1000) {
-                    counter.textContent = (target / 1000).toFixed(0) + 'K';
+                    const kValue = Math.floor(target / 1000);
+                    const remainder = Math.floor((target % 1000) / 100);
+                    if (remainder > 0) {
+                        counter.textContent = kValue + '.' + remainder + 'K';
+                    } else {
+                        counter.textContent = kValue + 'K';
+                    }
                 } else {
                     counter.textContent = target;
                 }
@@ -442,8 +457,8 @@ function initCounters() {
     
     // Use Intersection Observer to trigger animation when visible
     const observerOptions = {
-        threshold: 0.5,
-        rootMargin: '0px 0px -100px 0px'
+        threshold: 0.3,
+        rootMargin: '0px 0px -50px 0px'
     };
     
     const observer = new IntersectionObserver((entries) => {
