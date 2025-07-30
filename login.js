@@ -3,35 +3,31 @@ document.addEventListener('DOMContentLoaded', function() {
     const loginForm = document.getElementById('loginForm');
     const errorMessage = document.getElementById('errorMessage');
     
-    // Super simple hardcoded credentials - NOT FOR PRODUCTION USE
-    const validCredentials = {
-        username: 'admin',
-        password: 'axees2025'
-    };
+    // Hardcoded access code
+    const validAccessCode = '344456';
     
     loginForm.addEventListener('submit', function(e) {
         e.preventDefault();
         
-        const username = document.getElementById('username').value;
-        const password = document.getElementById('password').value;
+        const accessCode = document.getElementById('accessCode').value.trim();
         
         // Hide error message initially
         errorMessage.classList.remove('show');
         
-        // Simple text matching for credentials
-        if (username === validCredentials.username && password === validCredentials.password) {
+        // Check access code
+        if (accessCode === validAccessCode) {
             // Store login state in sessionStorage
             sessionStorage.setItem('axees_logged_in', 'true');
             sessionStorage.setItem('login_timestamp', new Date().toISOString());
             
-            // Redirect to sales page
-            window.location.href = 'sales.html';
+            // Redirect to slideshow page
+            window.location.href = 'slideshow.html';
         } else {
             // Show error message
             errorMessage.classList.add('show');
             
-            // Clear password field
-            document.getElementById('password').value = '';
+            // Clear access code field
+            document.getElementById('accessCode').value = '';
             
             // Shake animation for form
             loginForm.style.animation = 'shake 0.5s ease';
@@ -55,6 +51,6 @@ document.addEventListener('DOMContentLoaded', function() {
         document.head.appendChild(style);
     }
     
-    // Focus on username input
-    document.getElementById('username').focus();
+    // Focus on access code input
+    document.getElementById('accessCode').focus();
 });

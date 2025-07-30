@@ -98,24 +98,16 @@
         <form class="login-form" id="loginForm">
             <input 
                 type="text" 
-                id="username" 
-                name="username" 
+                id="accessCode" 
+                name="accessCode" 
                 class="form-input" 
-                placeholder="Username" 
+                placeholder="Enter Access Code" 
                 required
-                autocomplete="username"
-            >
-            <input 
-                type="password" 
-                id="password" 
-                name="password" 
-                class="form-input" 
-                placeholder="Password" 
-                required
-                autocomplete="current-password"
+                maxlength="6"
+                style="text-align: center; font-size: 1.2rem; letter-spacing: 0.2em;"
             >
             <button type="submit" class="btn btn-primary login-button">Login</button>
-            <p class="error-message" id="errorMessage">Invalid username or password</p>
+            <p class="error-message" id="errorMessage">Invalid access code</p>
         </form>
     </div>
 
