@@ -411,8 +411,8 @@ function initCounters() {
     
     const animateCounter = (counter) => {
         const target = parseInt(counter.getAttribute('data-target'));
-        const duration = 2000; // 2 seconds
-        const steps = 60; // 60 steps for smooth animation
+        const duration = 4000; // 4 seconds (slower)
+        const steps = 80; // 80 steps for smoother animation
         const increment = target / steps;
         const stepDuration = duration / steps;
         let current = 0;
@@ -468,7 +468,7 @@ function initCounters() {
                 if (!counter.dataset.animated) {
                     counter.dataset.animated = 'true';
                     // Add slight delay for staggered effect
-                    const delay = Array.from(counters).indexOf(counter) * 200;
+                    const delay = Array.from(counters).indexOf(counter) * 400; // Longer stagger delay
                     setTimeout(() => animateCounter(counter), delay);
                 }
             }
