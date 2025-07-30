@@ -4,9 +4,9 @@
   "description": "Axees - Automated Influencer Marketing Platform Landing Page",
   "main": "index.html",
   "scripts": {
-    "dev": "echo 'This is a static HTML project. Please use: python test-server.py' && exit 1",
-    "start": "echo 'This is a static HTML project. Please use: python test-server.py' && exit 1",
-    "serve": "python test-server.py"
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
   },
   "keywords": [
     "landing-page",
