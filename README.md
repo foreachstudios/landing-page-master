@@ -1,6 +1,6 @@
 # Axees Landing Page
 
-An optimized, responsive landing page for the Axees automated influencer marketing platform, built with vanilla HTML, CSS, and JavaScript.
+A comprehensive, showcase-focused landing page for the Axees automated influencer marketing platform, designed to serve multiple target audiences including potential users, investors, and general visitors.
 
 ## Features
 
@@ -9,6 +9,8 @@ An optimized, responsive landing page for the Axees automated influencer marketi
 - Fully responsive (mobile-first approach)
 - Smooth animations and scroll effects
 - Interactive hover states and transitions
+- Professional showcase-focused layout
+- Clear user experience flow for different audiences
 
 ### 📱 Mobile Optimized
 - Mobile-first responsive design
@@ -33,19 +35,41 @@ An optimized, responsive landing page for the Axees automated influencer marketi
 ### 🚀 Features
 - Responsive navigation with mobile hamburger menu
 - Smooth scrolling between sections
-- Interactive waitlist signup form
+- Interactive contact and inquiry forms
+- FAQ section with expandable answers
 - Form validation and user feedback
 - Local storage for form data
 - Progressive Web App capabilities
+- Investor access portal with secure login
+- Embedded Vimeo video integration
+- Comprehensive app showcase section
 
+### 🎯 Target Audiences
+- **Potential Users**: Clear value proposition and feature showcase
+- **Investors**: Dedicated access section with exclusive content
+- **General Visitors**: Comprehensive information and easy navigation
+
+### 📋 Key Sections
+- **Hero Section**: Eye-catching introduction with embedded video
+- **App Showcase**: Detailed feature presentation with 6 key capabilities
+- **How It Works**: Visual workflow demonstration
+- **Investor Access**: Secure portal for exclusive content
+- **Features**: Comprehensive benefits overview
+- **FAQ**: Common questions and detailed answers
+- **Contact**: Multiple contact methods and inquiry form
+- **Testimonials**: Social proof from industry leaders
 ## File Structure
 
 ```
 ├── index.html          # Main HTML file
 ├── styles.css          # Responsive CSS styles
 ├── script.js           # Interactive JavaScript
+├── login.html          # Investor login portal
+├── sales.html          # Investor presentation slides
+├── slideshow.html      # Full-screen slide presentation
 ├── manifest.json       # PWA manifest
 ├── .htaccess          # Apache optimization
+├── slides/            # Presentation slide images
 └── README.md          # Documentation
 ```
 
@@ -57,6 +81,11 @@ An optimized, responsive landing page for the Axees automated influencer marketi
    python -m http.server 8000
    ```
 3. Access at `http://localhost:8000`
+
+### Investor Access
+- Navigate to the investor login section
+- Use access code: `344456`
+- View exclusive presentation materials and slides
 
 ## Browser Support
 
@@ -71,6 +100,8 @@ An optimized, responsive landing page for the Axees automated influencer marketi
 - JavaScript lazy loading and performance optimizations
 - Image preloading for critical resources
 - Efficient event handling with debouncing
+- FAQ accordion for better content organization
+- Contact form with validation and feedback
 
 ## Customization
 
@@ -90,6 +121,12 @@ Modify text content directly in `index.html`
 ### Functionality
 Extend JavaScript features in `script.js`
 
+### Video Integration
+The Vimeo video is embedded in multiple sections:
+- Hero section for immediate impact
+- App showcase for detailed presentation
+- Responsive and optimized for all devices
+
 ## Deployment
 
 ### Apache
@@ -101,3 +138,26 @@ Add equivalent configuration for GZIP and caching
 
 ### Static Hosting
 Works with Netlify, Vercel, GitHub Pages, etc.
+
+## User Experience Flow
+
+### For Potential Users
+1. Land on hero section with clear value proposition
+2. Watch embedded video for product demonstration
+3. Explore app showcase and features
+4. Review FAQ for common questions
+5. Contact via form or direct email
+
+### For Investors
+1. Navigate to investor access section
+2. Login with secure access code
+3. View exclusive presentation slides
+4. Access detailed financial and strategic information
+5. Contact investor relations directly
+
+### For General Visitors
+1. Explore comprehensive feature overview
+2. Understand the technology and benefits
+3. Read testimonials and social proof
+4. Get questions answered in FAQ
+5. Multiple contact options available

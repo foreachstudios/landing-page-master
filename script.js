@@ -8,6 +8,8 @@ document.addEventListener('DOMContentLoaded', function() {
     initAnimations();
     initRotatingText();
     initCounters();
+    initFAQ();
+    initContactForm();
 });
 
 // Mobile Navigation Toggle
@@ -389,8 +391,7 @@ function initRotatingText() {
 }
 
 // Copy Email Function
-function copyEmail() {
-    const email = 'axees@axees.io';
+function copyEmail(email = 'axees@axees.io') {
     navigator.clipboard.writeText(email).then(() => {
         showNotification('Email copied to clipboard!', 'success');
     }).catch(() => {
@@ -403,6 +404,93 @@ function copyEmail() {
         document.body.removeChild(textArea);
         showNotification('Email copied to clipboard!', 'success');
     });
+}
+
+// FAQ Functionality
+function initFAQ() {
+    const faqItems = document.querySelectorAll('.faq-item');
+    
+    faqItems.forEach(item => {
+        const question = item.querySelector('.faq-question');
+        
+        question.addEventListener('click', () => {
+            const isActive = item.classList.contains('active');
+            
+            // Close all other FAQ items
+            faqItems.forEach(otherItem => {
+                if (otherItem !== item) {
+                    otherItem.classList.remove('active');
+                }
+            });
+            
+            // Toggle current item
+            item.classList.toggle('active', !isActive);
+        });
+    });
+}
+
+// Contact Form Functionality
+function initContactForm() {
+    const contactForm = document.getElementById('contactForm');
+    
+    if (contactForm) {
+        contactForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(contactForm);
+            const data = {
+                name: formData.get('name'),
+                email: formData.get('email'),
+                company: formData.get('company'),
+                inquiry_type: formData.get('inquiry_type'),
+                message: formData.get('message')
+            };
+            
+            // Basic validation
+            if (!data.name || !data.email || !data.inquiry_type || !data.message) {
+                showNotification('Please fill in all required fields', 'error');
+                return;
+            }
+            
+            if (!isValidEmail(data.email)) {
+                showNotification('Please enter a valid email address', 'error');
+                return;
+            }
+            
+            // Simulate form submission
+            submitContactForm(data);
+        });
+    }
+}
+
+function submitContactForm(data) {
+    const submitButton = document.querySelector('#contactForm .btn');
+    const originalText = submitButton.textContent;
+    
+    // Show loading state
+    submitButton.textContent = 'Sending...';
+    submitButton.disabled = true;
+    
+    // Simulate API call
+    setTimeout(() => {
+        // Reset button
+        submitButton.textContent = originalText;
+        submitButton.disabled = false;
+        
+        // Show success message
+        showNotification('🎉 Message sent successfully! We\'ll get back to you soon.', 'success');
+        
+        // Clear form
+        document.getElementById('contactForm').reset();
+        
+        // Store in localStorage for demo purposes
+        const contactData = {
+            ...data,
+            timestamp: new Date().toISOString()
+        };
+        localStorage.setItem('axees_contact', JSON.stringify(contactData));
+        
+    }, 2000);
 }
 
 // Animated Counters
