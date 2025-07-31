@@ -15,6 +15,7 @@
   ],
   "author": "Axees",
   "license": "MIT",
-  "devDependencies": {},
-  "dependencies": {}
+  "devDependencies": {
+    "vite": "^7.0.6"
+  }
 }
